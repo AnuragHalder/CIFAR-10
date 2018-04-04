@@ -50,7 +50,7 @@ train_dataset, train_labels = reshape(train_dataset, train_labels)
 test_dataset, test_labels = reshape(test_dataset, test_labels)
 
 seq = iaa.Sequential([
-   iaa.Fliplr(1), # horizontally flip 50% of the images
+   iaa.Fliplr(1)
 ])
 
 
@@ -59,15 +59,6 @@ images_aug = seq.augment_images(images)
 train_dataset = np.append(train_dataset, images_aug, axis = 0)
 train_labels = np.append(train_labels, train_labels, axis = 0)
 
-#plt.imshow(train_dataset[1:2][0], interpolation='nearest')	
-#plt.show()
-#print(train_labels[1])
-#
-#plt.imshow(train_dataset[50001:50002][0], interpolation='nearest')	
-#plt.show()
-#print(train_labels[50001])
-#
-#Building the model #
 model = Sequential()
 model.add(Conv2D(32,(3,3), activation = 'relu',input_shape=(image_size, image_size, channels), padding = "same"))
 model.add(Dropout(0.2))
@@ -93,7 +84,6 @@ model.add(Dense(10,activation='softmax'))
 epochs = 25
 lrate = 0.01
 decay = lrate/epochs
-#opt = keras.optimizers.rmsprop(lr=lrate, decay=decay)
 opt = SGD(lr=lrate, momentum=0.9, decay=decay, nesterov=False)
 model.compile(loss='categorical_crossentropy',optimizer=opt, metrics=['accuracy'])
 
